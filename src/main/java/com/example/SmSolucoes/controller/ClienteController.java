@@ -35,4 +35,9 @@ public class ClienteController {
     public void deleteCliente(@PathVariable Integer id) {
         clienteRepository.deleteById(id);
     }
+
+    @PutMapping
+    public Cliente updateCliente(@RequestBody Cliente cliente) {
+       return clienteRepository.save(cliente);
+    }
 }
