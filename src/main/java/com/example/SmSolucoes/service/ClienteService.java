@@ -1,38 +1,109 @@
 package com.example.SmSolucoes.service;
 
-import com.example.SmSolucoes.model.Cliente;
+import com.example.SmSolucoes.model.ClienteModel;
 import com.example.SmSolucoes.repository.ClienteRepository;
-import lombok.AllArgsConstructor;
+import com.example.SmSolucoes.rest.dto.ClienteDto;
+import com.example.SmSolucoes.rest.form.ClienteForm;
+import com.example.SmSolucoes.rest.form.ClienteUpdateForm;
+import com.example.SmSolucoes.service.exceptions.BusinessRuleException;
+import com.example.SmSolucoes.service.exceptions.DataIntegrityException;
+import com.example.SmSolucoes.service.exceptions.ObjectNotFoundException;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
-@AllArgsConstructor
 public class ClienteService {
 
+    @Autowired
     private ClienteRepository clienteRepository;
 
-    public List<Cliente> findAll() {
-        return clienteRepository.findAll();
+    @Autowired
+    private ModelMapper modelMapper;
+
+    public List<ClienteDto> ObterTodos() {
+        try
+        {
+            List<ClienteModel> clienteModels = clienteRepository.findAll();
+
+            return clienteModels.stream()
+                    .map(cliente -> modelMapper.map(cliente, ClienteDto.class))
+                    .collect(Collectors.toList());
+        }
+        catch (BusinessRuleException e)
+        {
+            throw new BusinessRuleException("Não foi possível consultar os Clientes!");
+        }
     }
 
-    public Cliente findById(Integer id) {
-        Optional<Cliente> obj = clienteRepository.findById(id);
-        return obj.get();
+    public ClienteDto ObterPorId(Integer id) {
+        try
+        {
+            ClienteModel clienteModel = clienteRepository.findById(id).get();
+            return modelMapper.map(clienteModel, ClienteDto.class);
+        }
+        catch (NoSuchElementException e)
+        {
+            throw new ObjectNotFoundException("Cliente não encontrado! Codigo: " + id + ", Tipo: " + ClienteModel.class.getName());
+        }
     }
 
-    public Cliente create(Cliente cliente) {
-        return clienteRepository.save(cliente);
+    public void SalvarCliente(ClienteForm clienteForm) {
+        try
+        {
+            ClienteModel clienteNovo = modelMapper.map(clienteForm, ClienteModel.class);
+            clienteNovo = clienteRepository.save(clienteNovo);
+        }
+        catch (DataIntegrityViolationException e)
+        {
+            throw new DataIntegrityException("Campo(s) obrigatório(s) do Cliente não foi(foram) preenchido(s).");
+        }
     }
 
-    public Cliente update(Integer id, Cliente cliente) {
-        cliente.setId(id);
-        return  clienteRepository.save(cliente);
+    public ClienteDto AtualizarCliente(Integer id, ClienteUpdateForm clienteForm) {
+        try
+        {
+            Optional<ClienteModel> clienteExistente = clienteRepository.findById(id);
+
+            if (clienteExistente.isPresent()) {
+                ClienteModel clienteAtualizado = clienteExistente.get();
+                clienteAtualizado.setNmCliente(clienteForm.getNmCliente());
+                clienteAtualizado = clienteRepository.save(clienteAtualizado);
+
+                return modelMapper.map(clienteAtualizado, ClienteDto.class);
+            }
+            else
+            {
+                throw new DataIntegrityException("O Código do Cliente não existe na base de dados!");
+            }
+        }
+        catch (DataIntegrityViolationException e)
+        {
+            throw new DataIntegrityException("Campo(s) obrigatório(s) do Cliente não foi(foram) preenchido(s).");
+        }
     }
 
-    public void delete(Integer id) {
-        clienteRepository.deleteById(id);
+    public void RemoverCliente(Integer id) {
+        try
+        {
+            if (clienteRepository.existsById(id)) {
+                clienteRepository.deleteById(id);
+
+            }
+            else
+            {
+                throw new DataIntegrityException("O código do Cliente não existe na base de dados!");
+            }
+        }
+        catch (DataIntegrityViolationException e)
+        {
+            throw new DataIntegrityException("Não é possível excluir um Cliente!");
+        }
     }
 }

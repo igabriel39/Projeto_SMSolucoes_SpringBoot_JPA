@@ -1,11 +1,12 @@
 CREATE TABLE tbCliente (
   idCliente INT AUTO_INCREMENT(1,1) NOT NULL,
   nmCliente VARCHAR(50) NOT NULL,
-  cpfCnpj VARCHAR(14) NOT NULL,
+  cpf VARCHAR(11) NOT NULL,
   dataCadastro DATETIME NOT NULL,
   dataAlteracao DATETIME NULL,
 
-  CONSTRAINT PK_Cliente PRIMARY KEY (idCliente)
+  CONSTRAINT PK_Cliente PRIMARY KEY (idCliente),
+  CONSTRAINT UQ_Cliente UNIQUE (cpf)
 );
 
 CREATE TABLE tbProduto (
