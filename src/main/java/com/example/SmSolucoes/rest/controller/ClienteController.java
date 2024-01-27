@@ -2,7 +2,6 @@ package com.example.SmSolucoes.rest.controller;
 
 import com.example.SmSolucoes.rest.dto.ClienteDto;
 import com.example.SmSolucoes.rest.form.ClienteForm;
-import com.example.SmSolucoes.rest.form.ClienteUpdateForm;
 import com.example.SmSolucoes.service.ClienteService;
 import com.example.SmSolucoes.service.exceptions.ConstraintException;
 import jakarta.validation.Valid;
@@ -42,12 +41,12 @@ public class ClienteController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ClienteDto> update(@Valid @RequestBody ClienteUpdateForm clienteUpdateForm
+    public ResponseEntity<ClienteDto> update(@Valid @RequestBody ClienteForm clienteForm
             , @PathVariable("id") int id, BindingResult br) {
         if (br.hasErrors())
             throw new ConstraintException(br.getAllErrors().get(0).getDefaultMessage());
 
-        ClienteDto clienteDto = clienteService.AtualizarCliente(id, clienteUpdateForm);
+        ClienteDto clienteDto = clienteService.AtualizarCliente(id, clienteForm);
         return ResponseEntity.ok().body(clienteDto);
     }
 

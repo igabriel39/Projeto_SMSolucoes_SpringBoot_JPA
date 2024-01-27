@@ -4,7 +4,6 @@ import com.example.SmSolucoes.model.ClienteModel;
 import com.example.SmSolucoes.repository.ClienteRepository;
 import com.example.SmSolucoes.rest.dto.ClienteDto;
 import com.example.SmSolucoes.rest.form.ClienteForm;
-import com.example.SmSolucoes.rest.form.ClienteUpdateForm;
 import com.example.SmSolucoes.service.exceptions.BusinessRuleException;
 import com.example.SmSolucoes.service.exceptions.DataIntegrityException;
 import com.example.SmSolucoes.service.exceptions.ObjectNotFoundException;
@@ -66,7 +65,7 @@ public class ClienteService {
         }
     }
 
-    public ClienteDto AtualizarCliente(Integer id, ClienteUpdateForm clienteForm) {
+    public ClienteDto AtualizarCliente(Integer id, ClienteForm clienteForm) {
         try
         {
             Optional<ClienteModel> clienteExistente = clienteRepository.findById(id);
@@ -74,6 +73,7 @@ public class ClienteService {
             if (clienteExistente.isPresent()) {
                 ClienteModel clienteAtualizado = clienteExistente.get();
                 clienteAtualizado.setNmCliente(clienteForm.getNmCliente());
+                clienteAtualizado.setCpf(clienteForm.getCpf());
                 clienteAtualizado = clienteRepository.save(clienteAtualizado);
 
                 return modelMapper.map(clienteAtualizado, ClienteDto.class);
