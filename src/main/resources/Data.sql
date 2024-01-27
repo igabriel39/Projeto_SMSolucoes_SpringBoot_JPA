@@ -22,7 +22,6 @@ CREATE TABLE tbProduto (
 CREATE TABLE tbVenda (
   idVenda INT AUTO_INCREMENT(1,1) NOT NULL,
   idCliente INT NOT NULL,
-  dtVenda DATE NOT NULL,
   dataCadastro DATETIME NOT NULL,
   dataAlteracao DATETIME NULL,
 
