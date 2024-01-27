@@ -8,11 +8,9 @@ import lombok.Data;
 @Table(name = "tbProdutoVenda")
 public class ProdutoVendaModel {
 
-    @Id
-    private int idVenda;
-
-    @Id
-    private int idProduto;
+    //Incorporando Chave Primária Composta
+    @EmbeddedId
+    private ProdutoVendaID produtoVendaID;
 
     @Column(name = "vlProdutoVendido", nullable = false)
     private float vlProdutoVendido;
