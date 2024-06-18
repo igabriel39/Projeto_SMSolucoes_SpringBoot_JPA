@@ -39,3 +39,46 @@ CREATE TABLE tbProdutoVenda (
   CONSTRAINT FK_ProdutoVenda_Venda FOREIGN KEY (idVenda) REFERENCES tbVenda (idVenda),
   CONSTRAINT FK_ProdutoVenda_Produto FOREIGN KEY (idProduto) REFERENCES tbProduto (idProduto)
 );
+
+
+insert into tbCliente
+(
+nmCliente, cpf, dataCadastro
+)
+values
+(
+'Igor Gabriel', '07652469538', '2027-05-05'
+);
+
+
+insert into tbProduto
+(
+nmProduto, vlProduto, dataCadastro
+)
+values
+(
+'Pão', 2, '2025-09-08'
+);
+
+
+
+insert into tbVenda
+(
+idCliente, dataCadastro
+)
+values
+(
+1, '2024-05-07'
+);
+
+
+
+
+insert into tbProdutoVenda
+(
+idVenda, idProduto, qtProdutoVendido, vlProdutoVendido
+)
+values
+(
+1, 1, 3, 7
+);

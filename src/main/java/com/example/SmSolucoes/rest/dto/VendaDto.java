@@ -2,6 +2,8 @@ package com.example.SmSolucoes.rest.dto;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class VendaDto {
 
@@ -9,4 +11,5 @@ public class VendaDto {
     private String cliente;
     private String dataVenda;
     private float valorVenda;
+    private List<ProdutoVendaDto> produtos;
 }
