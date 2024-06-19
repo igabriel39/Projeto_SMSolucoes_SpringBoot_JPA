@@ -41,32 +41,32 @@ CREATE TABLE tbProdutoVenda (
 );
 
 
-insert into tbCliente
+INSERT INTO tbCliente
 (
 nmCliente, cpf, dataCadastro
 )
-values
+VALUES
 (
 'Igor Gabriel', '07652469538', '2027-05-05'
 );
 
 
-insert into tbProduto
+INSERT INTO tbProduto
 (
 nmProduto, vlProduto, dataCadastro
 )
-values
+VALUES
 (
 'Pão', 2, '2025-09-08'
 );
 
 
 
-insert into tbVenda
+INSERT INTO tbVenda
 (
 idCliente, dataCadastro
 )
-values
+VALUES
 (
 1, '2024-05-07'
 );
@@ -74,11 +74,11 @@ values
 
 
 
-insert into tbProdutoVenda
+INSERT INTO tbProdutoVenda
 (
 idVenda, idProduto, qtProdutoVendido, vlProdutoVendido
 )
-values
+VALUES
 (
 1, 1, 3, 7
 );
