@@ -4,6 +4,7 @@ import com.example.SmSolucoes.rest.dto.ClienteDto;
 import com.example.SmSolucoes.rest.form.ClienteForm;
 import com.example.SmSolucoes.service.ClienteService;
 import com.example.SmSolucoes.service.exceptions.ConstraintException;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/cliente")
+
+//Anotação para garantir que os endpoints neste controller sempre terá o token de acesso adicionado na requisição,
+// se a requisição for feita pelo Swagger
+@SecurityRequirement(name = "Keycloack")
 public class ClienteController {
 
     @Autowired
